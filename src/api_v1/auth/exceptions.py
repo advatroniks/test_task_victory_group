@@ -18,7 +18,6 @@ class InvalidToken(NotAuthenticated):
 
 class InvalidCredentials(NotAuthenticated):
     DETAIL = ErrorCode.INVALID_CREDENTIALS
-    STATUS_CODE = status.HTTP_422_UNPROCESSABLE_ENTITY
 
 
 class EmailTaken(BadRequest):
