@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column, declared_attr
 from sqlalchemy import text, Uuid as Uuid_sql
 
 
-class BaseModel(DeclarativeBase):
+class Base(DeclarativeBase):
     __abstract__ = True
 
     @declared_attr.directive
