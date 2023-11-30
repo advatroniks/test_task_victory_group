@@ -31,4 +31,3 @@ class RefreshTokenNotValid(NotAuthenticated):
 class TokenVerifyNotValid(NotAuthenticated):
     DETAIL = ErrorCode.INVALID_EMAIL_RESET_PASS_CONFIRM_TOKEN
     STATUS_CODE = status.HTTP_409_CONFLICT
-

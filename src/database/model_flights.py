@@ -1,12 +1,19 @@
 from datetime import datetime
 
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ForeignKey, String, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database import Base
 
 
 class Flight(Base):
+    __table_args__ = (
+        CheckConstraint(
+            "departure_airport != arrival_airport",
+            name="check airport value",
+        ),
+    )
+
     flight_no: Mapped[str] = mapped_column(
         String(length=7),
         primary_key=True,
