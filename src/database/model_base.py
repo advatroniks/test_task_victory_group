@@ -1,7 +1,4 @@
-import uuid
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import Mapped, mapped_column, declared_attr
-from sqlalchemy import text, Uuid as Uuid_sql
+from sqlalchemy.orm import DeclarativeBase, declared_attr
 
 
 class Base(DeclarativeBase):
@@ -10,11 +7,3 @@ class Base(DeclarativeBase):
     @declared_attr.directive
     def __tablename__(cls):
         return f"{cls.__name__.lower()}s"
-
-    id: Mapped[str] = mapped_column(
-        Uuid_sql,
-        default=uuid.uuid4,
-        server_default=text("uuid_generate_v4()"),
-        primary_key=True
-    )
-
