@@ -1,9 +1,13 @@
+from typing import TYPE_CHECKING
 from datetime import datetime
 
 from sqlalchemy import ForeignKey, String, CheckConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
+
+if TYPE_CHECKING:
+    from src.database import Ticket
 
 
 class Flight(Base):
@@ -28,6 +32,13 @@ class Flight(Base):
     scheduled_departure: Mapped[datetime]
     scheduled_arrival: Mapped[datetime]
 
+    tickets: Mapped[list["Ticket"]] = relationship(
+        back_populates="flight",
+        order_by="asc(Ticket.price)"
+    )
 
+    def __str__(self):
+        return f"{self.__class__.__name__}:{self.departure_airport}>>{self.arrival_airport}"
 
-
+    def __repr__(self):
+        return str(self)
