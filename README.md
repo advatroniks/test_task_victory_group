@@ -44,7 +44,7 @@ $ sudo docker compose up
 ## Документация
 > Схема проекта
 
-```   
+```  
 est_task_victory_group 
 ├── src
 │   ├── api_v1         # Модуль API_V1 
@@ -78,6 +78,7 @@ est_task_victory_group
 |   ├── main.py                       # Главный файл для создания APP Fastapi
 |   ├── config.py                     # Общая конфигурация для проекта в.ч для БД
 |   ├── exceptions.py                 # Базовые ошибки(наследованные от HTTPExceptions, для настройки в проекте.
+```  
 
 
 
