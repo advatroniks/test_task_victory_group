@@ -6,6 +6,7 @@ from src.database import Flight
 from src.api_v1.tickets import crud
 from src.api_v1.tickets.schemas import TicketResponse
 from src.api_v1.tickets.djeikstra_alg import run_algorithm
+from src.api_v1.tickets.exceptions import RouteNotExist
 
 
 async def create_response_tickets(
@@ -49,7 +50,7 @@ def create_output_ticket_schema(
         price=ticket_model.price,
         scheduled_departure=flight_model.scheduled_departure,
         scheduled_arrival=flight_model.scheduled_arrival
-        )
+    )
 
     return response_schema
 
@@ -70,8 +71,6 @@ async def create_combinations_tickets(
     list_tickets = []
     left_cur = 0
     right_cur = left_cur + 1
-
-    print(len(route_list[1]))
 
     while right_cur != len(route_list[1]):
         print(route_list[1][left_cur], route_list[1][right_cur])
@@ -115,9 +114,13 @@ async def create_graph_flights(
         if temp_dict_flights[temp_departure_code]:
             flight_dicts.update(temp_dict_flights)
 
-    return run_algorithm(
-        data_dict=flight_dicts,
-        dep_airport=departure_airport_code,
-        arr_airport=arrival_airport_code
-    )
+    try:
+        result_list = run_algorithm(
+            data_dict=flight_dicts,
+            dep_airport=departure_airport_code,
+            arr_airport=arrival_airport_code
+        )
+        return result_list
 
+    except Exception:
+        raise RouteNotExist
