@@ -75,7 +75,11 @@ def create_nodes_in_graph(data_dict: dict):
     return nodes, links_with_price
 
 
-def run_algorithm(data_dict: dict):
+def run_algorithm(
+        data_dict: dict,
+        arr_airport: str,
+        dep_airport: str,
+):
     graph = Graph()
 
     list_nodes, edges = create_nodes_in_graph(data_dict=data_dict)
@@ -86,7 +90,10 @@ def run_algorithm(data_dict: dict):
     for list_with_values in edges:
         graph.add_edge(*list_with_values)
 
-    print(shortest_path(graph, 'UUEE', 'XRMU')) # output: (25, ['A', 'B', 'D'])
+    return shortest_path(
+        graph,
+        origin=dep_airport,
+        destination=arr_airport
+    )
 
 
-run_algorithm(data_dict=DICT_DATA)

@@ -1,11 +1,11 @@
 from datetime import date as datetime_date
 
 from sqlalchemy import select, func, and_
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import selectinload, joinedload, join
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.database import Flight
+from src.database import Flight, Ticket
 
 
 async def get_all_directions_from_airport_by_date(
@@ -16,15 +16,15 @@ async def get_all_directions_from_airport_by_date(
 ) -> dict:
     stmt = (select(
         Flight
-     ).options(
+    ).options(
         selectinload(Flight.tickets)
-     ).where(
+    ).where(
         and_(
             Flight.tickets.any(),
             func.date(Flight.scheduled_departure) == date,
             Flight.departure_airport == departure_airport_code,
         )
-     )
+    )
     )
 
     if scheduled_arrival:
@@ -43,3 +43,36 @@ async def get_all_directions_from_airport_by_date(
     }
 
     return result_dict
+
+
+async def get_ticket_if_exist_direct_route(
+        session: AsyncSession,
+        departure_airport: str,
+        arrival_airport: str,
+        date: datetime_date,
+        ordered_by_time: bool | None = None,
+):
+    stmt = select(
+        Flight
+    ).options(
+        joinedload(Flight.tickets),
+        joinedload(Flight.arr_airport_name),
+        joinedload(Flight.dep_airport_name)
+    ).where(
+        and_(
+            Flight.departure_airport == departure_airport,
+            Flight.arrival_airport == arrival_airport,
+            func.date(Flight.scheduled_departure) == date,
+        )
+    )
+
+    if ordered_by_time:
+        stmt = stmt.order_by(Flight.scheduled_departure.asc())
+
+    flight = await session.scalar(statement=stmt)
+
+    if not flight:
+        return None
+
+    return flight
+

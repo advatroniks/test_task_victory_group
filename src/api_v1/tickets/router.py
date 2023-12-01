@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database import db_helper
-from src.api_v1.tickets.service import create_graph_flights
+from src.api_v1.tickets.service import create_response_tickets
 
 
 router = APIRouter(tags=["tickets"])
@@ -18,12 +18,16 @@ async def get_tickets(
         date: datetime_date,
         departure_airport: str,
         arrival_airport: str,
-        cheapest: bool = True,
-        nearest: bool = False,
+        order_by_time: bool = False,
         session: AsyncSession = Depends(db_helper.get_async_session)
 ):
-    return await create_graph_flights(
-        session=session,
+    tickets = await create_response_tickets(
+        departure_airport=departure_airport,
+        arrival_airport=arrival_airport,
         date=date,
-        departure_airport_code=departure_airport
+        ordered_by_time=order_by_time,
+        session=session
     )
+
+    return tickets
+

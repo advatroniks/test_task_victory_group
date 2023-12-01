@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
 
 if TYPE_CHECKING:
-    from src.database import Ticket
+    from src.database import Ticket, Airport
 
 
 class Flight(Base):
@@ -35,6 +35,12 @@ class Flight(Base):
     tickets: Mapped[list["Ticket"]] = relationship(
         back_populates="flight",
         order_by="asc(Ticket.price)"
+    )
+    dep_airport_name: Mapped["Airport"] = relationship(
+        foreign_keys=departure_airport
+    )
+    arr_airport_name: Mapped["Airport"] = relationship(
+        foreign_keys=arrival_airport
     )
 
     def __str__(self):
