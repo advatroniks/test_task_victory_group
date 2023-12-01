@@ -4,13 +4,13 @@ from random import randint
 def create_random_available_tickets_in_flight():
     probability = randint(0, 100)
     if probability >= 95:
-        passengers = randint(45, 60)
+        passengers = randint(1, 2)
     elif probability >= 70:
-        passengers = randint(60, 100)
+        passengers = randint(4, 5)
     elif probability >= 20:
-        passengers = randint(100, 190)
+        passengers = randint(5, 8)
     else:
-        passengers = randint(190, 320)
+        passengers = randint(8, 12)
 
     return passengers
 

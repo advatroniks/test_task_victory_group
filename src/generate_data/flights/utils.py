@@ -22,6 +22,7 @@ MOST_POPULAR_AIRPORTS = [
     "ULLI",
     "ULLI",
     "UNNT",
+    "USPP",
 ]
 
 
@@ -79,7 +80,7 @@ def create_random_flight_time():
     flight_time = timedelta(hours=hours, minutes=minutes)
 
     scheduled_departure = datetime.utcnow() + timedelta(
-        days=randint(1, 365),
+        days=randint(1, 3),
         hours=randint(0, 23),
         minutes=randint(0, 60)
     )

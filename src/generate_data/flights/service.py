@@ -23,7 +23,7 @@ async def get_random_airport_icao_code(
         probability = randint(1, 2)
         airports_icao_set = set()
 
-        if probability == 1:
+        if probability:
             airports_icao_set.add(utils.get_random_airport())
 
         for airport in airports_models:

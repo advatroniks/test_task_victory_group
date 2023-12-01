@@ -43,7 +43,7 @@ async def create_tickets_for_flight(
 
 
 async def main(session: AsyncSession):
-    for _ in range(10_000):
+    for _ in range(100_000):
         flight_no, avail_tickets = await get_random_flight(
             session=session
         )

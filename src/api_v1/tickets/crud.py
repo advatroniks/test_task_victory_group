@@ -9,10 +9,10 @@ from src.database import Ticket, Flight
 
 
 async def get_all_directions_from_airport_by_date(
-        airport_icao_code: str,
+        departure_airport_code: str,
         date: datetime_date,
         session: AsyncSession,
-):
+) -> dict:
     stmt = (select(
         Flight
      ).options(
@@ -21,15 +21,19 @@ async def get_all_directions_from_airport_by_date(
         and_(
             Flight.tickets.any(),
             func.date(Flight.scheduled_departure) == date,
-            Flight.departure_airport == airport_icao_code,
+            Flight.departure_airport == departure_airport_code,
         )
      )
     )
 
-    result = await session.scalars(statement=stmt)
+    flight_scalar_result = await session.scalars(statement=stmt)
 
-    total = ""
-    for flight in result:
-        total = f"{flight}, {flight.tickets[0]}"
+    temp_dict = {}
+    for flight in flight_scalar_result:
+        temp_dict[flight.arrival_airport] = flight.tickets[0].price
 
-    return total
+    result_dict = {
+        departure_airport_code: temp_dict
+    }
+
+    return result_dict
