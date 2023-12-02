@@ -6,7 +6,7 @@ from src.database import Flight
 from src.api_v1.tickets import crud
 from src.api_v1.tickets.schemas import TicketResponse
 from src.api_v1.tickets.djeikstra_alg import run_algorithm
-from src.api_v1.tickets.exceptions import RouteNotExist
+from src.api_v1.tickets.exceptions import RouteNotExist, NotAvailableTickers
 
 
 async def create_response_tickets(
@@ -24,23 +24,26 @@ async def create_response_tickets(
         ordered_by_time=ordered_by_time
     )
 
-    if not flight_model:
-        return await create_combinations_tickets(
-            session=session,
-            departure_airport=departure_airport,
-            arrival_airport=arrival_airport,
-            date=date
+    if flight_model:
+        return create_output_ticket_schema(
+            flight_model=flight_model
         )
 
-    return create_output_ticket_schema(
-        flight_model=flight_model
+    return await create_combinations_tickets(
+        session=session,
+        departure_airport=departure_airport,
+        arrival_airport=arrival_airport,
+        date=date
     )
 
 
 def create_output_ticket_schema(
         flight_model: Flight,
 ):
-    ticket_model = flight_model.tickets[0]
+    try:
+        ticket_model = flight_model.tickets[0]
+    except IndexError:
+        raise NotAvailableTickers
 
     response_schema = TicketResponse(
         departure_airport=flight_model.dep_airport_name.airport_name,
@@ -122,5 +125,5 @@ async def create_graph_flights(
         )
         return result_list
 
-    except Exception:
+    except KeyError:
         raise RouteNotExist

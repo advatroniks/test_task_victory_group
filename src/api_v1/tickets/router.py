@@ -6,13 +6,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database import db_helper
 from src.api_v1.tickets.service import create_response_tickets
-
+from src.api_v1.tickets.schemas import TicketResponse
 
 router = APIRouter(tags=["tickets"])
 
 
 @router.get(
-    path="/"
+    path="/",
+    response_model=list[TicketResponse]
 )
 async def get_tickets(
         date: datetime_date,
