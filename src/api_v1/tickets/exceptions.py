@@ -8,3 +8,7 @@ class RouteNotExist(NotFound):
 
 class NotAvailableTickets(NotFound):
     DETAIL = ErrorCode.NotAvailableTickets
+
+
+class AirportNameError(NotFound):
+    DETAIL = ErrorCode.AirportNotExist

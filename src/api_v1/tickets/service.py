@@ -35,9 +35,10 @@ async def create_response_tickets(
     )
 
     if flight_model:
-        return create_output_ticket_schema(
+        ticket_response_schema = create_output_ticket_schema(
             flight_model=flight_model
         )
+        return [ticket_response_schema]
 
     return await create_combinations_tickets(
         session=session,
