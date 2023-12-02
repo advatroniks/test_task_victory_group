@@ -14,6 +14,15 @@ async def get_all_directions_from_airport_by_date(
         session: AsyncSession,
         scheduled_arrival: datetime_date | None = None,
 ) -> dict:
+    """
+    Функция, которая запрашивает все доступные направления в указанную дату из данного аэропорта,
+    Если есть хотя бы один доступный билет на данное направление.
+    :param departure_airport_code:  Код аэропорта ICAO
+    :param date:  Дата в формате ISO 8601
+    :param session: Объект асинхронной сессии алхимии
+    :param scheduled_arrival: Указание для поиска ТОЛЬКО ПОСЛЕ ЭТОГО ВРЕМЕНИ.
+    :return: Возвращает словарь, где ключи - КОД АЭРОПРТА, значение list[цена:int, время прибытия:datetime]
+    """
     stmt = (select(
         Flight
     ).options(
@@ -51,7 +60,16 @@ async def get_ticket_if_exist_direct_route(
         arrival_airport: str,
         date: datetime_date,
         ordered_by_time: bool | None = None,
-):
+) -> Flight | None:
+    """
+    Функция для получения объекта sqlalchemy Flight. Если объект не найден, то return None
+    :param session: Объект AsyncSession sqlalchemy
+    :param departure_airport: код аэропорта вылета
+    :param arrival_airport: код аэропорта прилета
+    :param date: дата полета ISO 8601
+    :param ordered_by_time: bool Если указать True, то будет найден ближайший билет.
+    :return: Flight Sqlalchemy obj, если полет не найден, то None
+    """
     stmt = select(
         Flight
     ).options(

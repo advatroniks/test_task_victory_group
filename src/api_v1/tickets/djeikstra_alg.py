@@ -80,6 +80,28 @@ def run_algorithm(
         arr_airport: str,
         dep_airport: str,
 ):
+    """
+    Функция, которая запускает Алгоритм Дейкстры для поиска самой дешевой связки билетов.
+    example for data_dict >>>  {
+    "USPP": {
+        "UNNT": [4056, "2023-12-04T05:01:36.440052"]
+    },
+    "UNNT": {
+        "UUDD": [4457, "2023-12-04T16:04:21.998287"],
+        "XHSO": [6313, "2023-12-04T15:13:32.598047"],
+        "UUOL": [4426, "2023-12-04T21:37:32.909848"],
+        "UUUQ": [3885, "2023-12-04T10:23:29.142713"],
+        "UHNK": [4000, "2023-12-04T13:30:57.117000"],
+        "ULML": [3942, "2023-12-04T10:54:02.331461"],
+        "ULMQ": [3794, "2023-12-04T12:26:42.074165"]
+    }
+    }
+
+    :param data_dict: dict
+    :param arr_airport: Аэропорт, ОТПРАВЛЕНИЯ
+    :param dep_airport: Аэропорт ПРИЛЕТА
+    :return: tuple(total_flight_price, [DepartureAirportCode, Point, ... , ArrivalAirportCode])
+    """
     graph = Graph()
 
     list_nodes, edges = create_nodes_in_graph(data_dict=data_dict)

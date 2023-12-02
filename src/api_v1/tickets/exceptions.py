@@ -6,5 +6,5 @@ class RouteNotExist(NotFound):
     DETAIL = ErrorCode.RouteNotExist
 
 
-class NotAvailableTickers(NotFound):
+class NotAvailableTickets(NotFound):
     DETAIL = ErrorCode.NotAvailableTickets

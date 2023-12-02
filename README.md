@@ -66,7 +66,8 @@ est_task_victory_group
 |   |   |   ├── exceptions.py                 
 │   │   |   ├── router.py         
 |   |   |   ├── schemas.py   
-|   |   |   ├── service.py         
+|   |   |   ├── service.py 
+│   │   |   ├── djeikstra_alg.py    # Алгоритм Дейкстры, для получение минимальной цены для составных билетов.          
 |   ├── database    # Модуль для взаимодействия с базой данных
 │   │   ├── __init__.py                     # Инициализация всех элементов для работы с БД через SQLalchemy.
 │   │   ├── config.py                    # Создание AsyncEngine, AsycSessionFactory
@@ -85,7 +86,7 @@ est_task_victory_group
 > Использование API
 
     После запуска интерактивния документация доступна по адресу 
-    http://127.0.0.1:8080/docs#/ Реализовано через OpenAPI(Swagger)
+    http://127.0.0.1:8008/docs#/ Реализовано через OpenAPI(Swagger)
     
     ===============================AuthModule====================================
 
