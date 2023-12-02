@@ -38,7 +38,7 @@ async def register_user(
 async def login_for_get_access_token(
         auth_data: AuthUser,
         session: AsyncSession = Depends(db_helper.get_async_session),
-) -> str:
+) -> dict:
     user = await authenticate_user(
         user_schema=auth_data,
         session=session
