@@ -8,7 +8,7 @@ class JWTData(BaseModel):
 
 
 class AuthUser(BaseModel):
-    email: EmailStr
+    email: EmailStr = Field(alias="username")
     hashed_password: str = Field(min_length=6, max_length=50, alias="password")
 
 

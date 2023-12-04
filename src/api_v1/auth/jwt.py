@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 
 from jose import JWTError, jwt
 
-from fastapi.security import OAuth2PasswordBearer, OAuth2AuthorizationCodeBearer
-from fastapi import Depends, Request
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import Depends
 
 from src.api_v1.auth.exceptions import InvalidToken, AuthRequired
 from src.api_v1.auth.config import auth_config
@@ -11,7 +11,7 @@ from src.api_v1.auth.schemas import JWTData
 from src.database import User
 
 
-auth2_scheme = OAuth2PasswordBearer(tokenUrl="/api_v1/auth/token")
+http_bearer = HTTPBearer()
 
 
 def create_access_token(
@@ -33,8 +33,9 @@ def create_access_token(
 
 
 async def parse_jwt_data(
-        token: str = Depends(auth2_scheme)
+        credentials: HTTPAuthorizationCredentials = Depends(http_bearer)
 ):
+    token = credentials.credentials
     try:
         payload = jwt.decode(
             token=token,
